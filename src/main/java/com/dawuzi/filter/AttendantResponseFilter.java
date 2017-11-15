@@ -11,7 +11,8 @@ import javax.ws.rs.ext.Provider;
  * 
  * An example of an implementation of a {@link ContainerResponseFilter} 
  * This was used to add the header "Access-Control-Allow-Origin" to ease 
- * the demo of the sse rest call from a static html file
+ * the demo of the sse rest call from a static html file not served from 
+ * the web server
  * 
  * @author DAWUZI
  *
