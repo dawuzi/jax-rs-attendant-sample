@@ -1,5 +1,6 @@
 package com.dawuzi.rest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -166,7 +167,7 @@ public class AttendeeResource {
 
 	/**
 	 * 
-	 * 
+	 * Handling responses asynchronously in JAX-RS 2.0
 	 * 
 	 * @param asyncResponse
 	 */
@@ -203,7 +204,10 @@ public class AttendeeResource {
 		});
 		
 	}
-	
+	/**
+	 * From JAX-RS 2.1 The {@link CompletionStage} can now be returned directly
+	 * @return
+	 */
 	@GET
 	@Path("/async21")
 	public CompletionStage<List<Attendee>> getAllAttendantsAsync21() {
@@ -242,7 +246,7 @@ public class AttendeeResource {
 			logger.log(Level.SEVERE, "Error calling client", e);
 		}
 		
-		return mockDatabase.findAll();
+		return Collections.emptyList();
 	}
 	
 	@GET
@@ -274,6 +278,7 @@ public class AttendeeResource {
 					return firstAttendants;
 				});
 
+//		bothSets can be returned directly, but we may decide to put a check for any exception thrown during execution
 //		This just shows how exception that occurs while making any of the calls can be handle in a clean way
 		CompletionStage<Response> exceptionHandledNicelyResponse = bothSets.handle( (bothAttendants, e) -> {
 			if(e != null){
