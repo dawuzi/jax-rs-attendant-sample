@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Getting server updates</h1>
+<h1>Current count of attendants : <span id="attendant-count"></span></h1>
+<div id="result"></div>
+
+<script>
+if(typeof(EventSource) !== "undefined") {
+    var source = new EventSource("lagjug/attendee/sse/attendee-count");
+    source.onmessage = function(event) {
+		console.log(event.data);
+        document.getElementById("attendant-count").innerHTML = event.data;
+    };
+} else {
+    document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+</script>
+
+</body>
+</html>
