@@ -13,12 +13,15 @@ import javax.ejb.Asynchronous;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -77,6 +80,22 @@ public class AttendeeResource {
 		return attendeeService.getAllAttendees();
 	}
 	
+	/**
+	 * Sample to illustrate use of QueryParam
+	 * 
+	 * @param size
+	 * @param order
+	 * @return
+	 */
+	@GET
+	@Path("/some-attendees")
+	public List<Attendee> getSomeAttendees(
+			@DefaultValue(value="10") @Min(value = 0, message = "size must be positive") @QueryParam("size") int size
+			, @DefaultValue(value="name") @QueryParam("order") String order
+			){
+		return attendeeService.getAllAttendees();
+	}
+
 	/**
 	 * This returns a {@link Response}. As seen in the {@link AttendeeService#getAttendee(Long)} method
 	 * custom response HTTP code like 404 can be returned easily without having to throw a
