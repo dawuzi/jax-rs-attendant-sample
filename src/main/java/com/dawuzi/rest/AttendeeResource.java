@@ -13,7 +13,8 @@ import javax.ejb.Asynchronous;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.inject.Inject;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -90,10 +91,11 @@ public class AttendeeResource {
 	@GET
 	@Path("/some-attendees")
 	public List<Attendee> getSomeAttendees(
-			@DefaultValue(value="10") @Min(value = 0, message = "size must be positive") @QueryParam("size") int size
-			, @DefaultValue(value="name") @QueryParam("order") String order
+			@DefaultValue(value="0") @PositiveOrZero(message = "start must not be negative") @QueryParam("start") int start
+			, @DefaultValue(value="10") @Positive(message = "size must be greater than zero") @QueryParam("size") int size
+			, @DefaultValue(value="id") @QueryParam("order") String order
 			){
-		return attendeeService.getAllAttendees();
+		return attendeeService.getSomeAttendees(start, size, order);
 	}
 
 	/**
