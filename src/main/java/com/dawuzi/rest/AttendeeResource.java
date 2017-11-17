@@ -13,12 +13,16 @@ import javax.ejb.Asynchronous;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -77,6 +81,23 @@ public class AttendeeResource {
 		return attendeeService.getAllAttendees();
 	}
 	
+	/**
+	 * Sample to illustrate use of QueryParam
+	 * 
+	 * @param size
+	 * @param order
+	 * @return
+	 */
+	@GET
+	@Path("/some-attendees")
+	public List<Attendee> getSomeAttendees(
+			@DefaultValue(value="0") @PositiveOrZero(message = "start must not be negative") @QueryParam("start") int start
+			, @DefaultValue(value="10") @Positive(message = "size must be greater than zero") @QueryParam("size") int size
+			, @DefaultValue(value="id") @QueryParam("order") String order
+			){
+		return attendeeService.getSomeAttendees(start, size, order);
+	}
+
 	/**
 	 * This returns a {@link Response}. As seen in the {@link AttendeeService#getAttendee(Long)} method
 	 * custom response HTTP code like 404 can be returned easily without having to throw a

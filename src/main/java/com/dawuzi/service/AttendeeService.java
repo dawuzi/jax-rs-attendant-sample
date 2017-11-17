@@ -1,6 +1,7 @@
 package com.dawuzi.service;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -92,5 +93,32 @@ public class AttendeeService {
 
 	public int getAttendeeCount() {
 		return mockDatabase.findAll().size();
+	}
+
+	public List<Attendee> getSomeAttendees(int start, int size, String order) {
+		
+		List<Attendee> all = mockDatabase.findAll();
+		
+		if(all == null || all.isEmpty()){
+			return all;
+		}
+		
+//		the start location is more than the whole list so hence no match
+		if(all.size() <= start){
+			return Collections.emptyList();
+		}
+		
+		if(order != null && order.isEmpty()){
+			
+			if(order.equals("id")){
+				all.sort( (a1, a2) -> {return (int)(a1.getId() - a2.getId());});
+			} else if (order.equals("email")){
+				all.sort( (a1, a2) -> {return (a1.getEmail().compareTo(a2.getEmail()));});
+			}
+		}
+		
+		int endIndex = Math.min(start+size, all.size());
+		
+		return all.subList(start, endIndex);
 	}
 }
