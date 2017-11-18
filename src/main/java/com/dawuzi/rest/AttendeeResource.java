@@ -142,6 +142,8 @@ public class AttendeeResource {
 	
 	/**
 	 * 
+	 * http://localhost:8080/demo/sse_test.html or whatever IP and Port the application is deployed
+	 * 
 	 * This is a sample of how to send event streams to clients. This would send the current count of attendees
 	 * to a client. This was introduced in JAX-RS 2.1
 	 * 
