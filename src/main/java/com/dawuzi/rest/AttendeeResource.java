@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -43,6 +44,7 @@ import javax.ws.rs.sse.SseEventSink;
 
 import com.dawuzi.db.MockDatabase;
 import com.dawuzi.model.Attendee;
+import com.dawuzi.model.AttendeeFilterParam;
 import com.dawuzi.model.AttendeeGenericType;
 import com.dawuzi.model.ResponseMessage;
 import com.dawuzi.service.AttendeeService;
@@ -96,6 +98,21 @@ public class AttendeeResource {
 			, @DefaultValue(value="id") @QueryParam("order") String order
 			){
 		return attendeeService.getSomeAttendees(start, size, order);
+	}
+
+	/**
+	 * Sample to illustrate use of BeanParam
+	 * 
+	 * @param size
+	 * @param order
+	 * @return
+	 */
+	@GET
+	@Path("/some-attendees-using-bean-param")
+	public List<Attendee> getSomeAttendeesUsingBeanParam(@Valid @BeanParam AttendeeFilterParam attendeeFilterParam){
+		return attendeeService.getSomeAttendees(attendeeFilterParam.getStart(), 
+				attendeeFilterParam.getSize(), 
+				attendeeFilterParam.getOrder());
 	}
 
 	/**
